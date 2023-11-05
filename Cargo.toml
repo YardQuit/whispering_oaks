@@ -2,13 +2,17 @@
 name = "whispering_oaks"
 version = "1.0.0"
 edition = "2021"
-authors = ["Michael Jones"]
+authors = ["Michael A Jones (github:YardQuit)"]
 license = "GNU General Public License v3.0 (GPL-3.0 license)"
 description = ""
 repository = ""
 keywords = ["rust", "gpg", "encrypt", "editor"]
 documentation = ""
 categories = ["security"]
+
+[lib]
+name = "libs"
+path = "src/lib/applibs.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
