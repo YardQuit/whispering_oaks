@@ -1,4 +1,4 @@
-pub mod tempfile {
+pub mod encfile {
     use rand::distributions::Alphanumeric;
     use rand::{thread_rng, Rng};
     use std::io::{self, BufWriter, Write};
