@@ -1,31 +1,48 @@
 pub mod arguments {
-    use clap::Parser;
+    extern crate clap;
 
-    #[derive(Parser, Debug)]
-    #[command(
-        author = "Michael Jones", 
-        version, 
-        about = "Encrypt your documents using GPG while leveraging your preferred editor.", 
-        long_about = None
-    )]
+    use clap::{Arg, Command, ArgAction};
 
-    pub struct CliArgs {
-        #[arg(short, 
-            long, 
-            help = "To encrypt for a specific user ID and determine
-    which public keys to use, you can obtain the
-    necessary information by running the command
-    'gpg --list-public-keys'.")]
-        pub recipient: String,
+    const AUTHOR: &str = "Author: Michael A Jones (github: YardQuit)";
+    const ABOUT: &str = "Encrypt your documents using GPG while leveraging your preferred editor.";
+    const FHELP: &str = include_str!("help_filename.txt");
+    const RHELP: &str = include_str!("help_recipient.txt");
 
-        #[arg(short, 
-            long, 
-            help = "To assign a filename to a document, simply provide
-    the desired name without including the '.gpg'
-    extension. This extension will be added
-    automatically. If you want to save the file in a
-    particular directory, you can include the
-    desired path as part of the filename.")]
-        pub filename: String,
+    pub fn cli_args() -> (String, String) {
+        let mut filename = String::new();
+        let mut recipient = String::new();
+
+        let matches= Command::new("whispering oaks")
+        .author(AUTHOR)
+        .about(ABOUT)
+        .arg(
+            Arg::new("filename")
+                .help(FHELP)
+                .required(true)
+                .short('f')
+                .long("filename")
+                .num_args(1)
+                .action(ArgAction::Set)
+        )
+        .arg(
+            Arg::new("recipient")
+                .help(RHELP)
+                .required(true)
+                .short('r')
+                .long("recipient")
+                .num_args(1..)
+                .action(ArgAction::Set)
+        )
+        .get_matches();
+
+        if let Some(f) = matches.get_one::<String>("filename") {
+            filename = f.to_owned();
+            };
+
+        if let Some(r) = matches.get_one::<String>("recipient") {
+            recipient = r.to_owned();
+            };
+
+        (filename, recipient)
     }
 }

@@ -3,8 +3,6 @@ pub mod tempfile {
     use rand::{thread_rng, Rng};
     use std::io::{self, BufWriter, Write};
     use std::process::Command;
-    use crate::cliargs::arguments;
-
 
     pub fn create_filename() -> String {
         let generate: String = thread_rng()
@@ -42,13 +40,13 @@ pub mod tempfile {
         }
     }
 
-    pub fn file_encryption(args: &arguments::CliArgs, temporary_file: &str) {
-        let output_file = format!("{}.gpg", args.filename);
+    pub fn file_encryption(filename: &str, recipient: &str, temporary_file: &str) {
+        let output_file = format!("{}.gpg", filename);
 
         let mut command_gpg = Command::new("gpg");
         command_gpg.arg("-o").arg(&output_file);
         command_gpg.arg("-e");
-        command_gpg.arg("-r").arg(&args.recipient);
+        command_gpg.arg("-r").arg(recipient);
         command_gpg.arg(format!("/dev/shm/{}", temporary_file));
 
         let status = command_gpg.status();
