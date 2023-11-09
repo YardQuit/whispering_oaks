@@ -5,10 +5,11 @@ pub mod arguments {
 
     const AUTHOR: &str = "Author: Michael A Jones (github: YardQuit)";
     const ABOUT: &str = "Encrypt your documents using GPG while leveraging your preferred editor.";
-    const FHELP: &str = include_str!("help_filename.txt");
-    const RHELP: &str = include_str!("help_recipient.txt");
+    const FHELP: &str = include_str!("t_help_filename.txt");
+    const RHELP: &str = include_str!("t_help_recipient.txt");
+    const DHELP: &str = include_str!("t_help_decrypt.txt");
 
-    pub fn cli_args() -> (String, String) {
+    pub fn cli_args() -> (String, String, bool) {
         let mut filename = String::new();
         let mut recipient = String::new();
 
@@ -23,6 +24,7 @@ pub mod arguments {
                 .long("filename")
                 .num_args(1)
                 .action(ArgAction::Set)
+                .aliases(["file", "file-name", "name"])
         )
         .arg(
             Arg::new("recipient")
@@ -32,7 +34,18 @@ pub mod arguments {
                 .long("recipient")
                 .num_args(1..)
                 .action(ArgAction::Set)
+                .aliases(["receiver", "rec"])
         )
+        .arg(
+            Arg::new("decrypt")
+                .help(DHELP)
+                .required(false)
+                .short('d')
+                .num_args(0)
+                .long("decrypt")
+                .action(ArgAction::SetTrue)
+                .aliases(["dec", "decr"])
+            )
         .get_matches();
 
         if let Some(f) = matches.get_one::<String>("filename") {
@@ -43,6 +56,8 @@ pub mod arguments {
             recipient = r.to_owned();
             };
 
-        (filename, recipient)
+        let decrypt = matches.get_flag("decrypt");
+       
+        (filename, recipient, decrypt)
     }
 }
