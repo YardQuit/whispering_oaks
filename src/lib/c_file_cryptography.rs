@@ -41,9 +41,7 @@ pub mod gpgfile {
 
     pub fn file_decryption(filename: &str, temporary_file: &str) -> String {
         let temporary_file = Path::new("/dev/shm/").join(temporary_file);
-        println!("debug output: {:?}", temporary_file);
         let filename = Path::new("").join(filename);
-        println!("debug input: {:?}", filename);
         let mut attempts = 0;
 
 
