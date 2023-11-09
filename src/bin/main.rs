@@ -12,14 +12,12 @@ fn main() {
 
     let (filename,recipient, decrypt) = arguments::cli_args();
     if !decrypt {
-        println!("this is encrypt track");
         fileact::file_creation(&temporary_file);
         editor::editor_initiation(&editor, &temporary_file);
         fileact::file_verification(&temporary_file);
         gpgfile::file_encryption(&filename, &recipient, &temporary_file);
         fileact::file_removal(&temporary_file);
     } else {
-        println!("this is decrypt track");
         let new_filename = gpgfile::file_decryption(&filename, &temporary_file);
         editor::editor_initiation(&editor, &temporary_file);
         fileact::file_verification(&temporary_file);
