@@ -1,1 +1,2 @@
-this is decrypt help
+To decrypt an already encrypted file and open it 
+for editing, re-encrypts for specified recipient.
