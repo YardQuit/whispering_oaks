@@ -31,9 +31,7 @@ whispering_oaks  (workspace crate)
 ├── lib_fs (lib crate, filesystem interaction and activities)
 │   ├── src
 │   │   ├── lib.rs  (root file of the crate)
-│   │   ├── vfile.rs (file for 'file' verification(s) related functions)
-│   │   ├── vdir.rs (file for 'dir' verification(s) related functions)
-│   │   ├── vbin.rs (file for 'binary' verification of dependencies)
+│   │   ├── verify.rs (file for 'fs' verification(s) related functions)
 │   │   ├── make.rs (file for crafting/creation related functions)
 │   │   └── wreck.rs (file for destroying/removing related functions)
 │   └── Cargo.toml
