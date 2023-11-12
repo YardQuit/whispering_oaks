@@ -14,7 +14,7 @@ pub fn cli_args() -> (String, String, bool) {
     let mut filename = String::new();
     let mut recipient = String::new();
 
-    let matches= Command::new("whispering oaks")
+    let matches = Command::new("whispering oaks")
     .author(AUTHOR)
     .about(ABOUT)
     .arg(
