@@ -6,13 +6,15 @@ const ABOUT: &str = "Encrypt your documents using GPG while leveraging your pref
 const FHELP: &str = include_str!("t_help_filename.txt");
 const RHELP: &str = include_str!("t_help_recipient.txt");
 const DHELP: &str = include_str!("t_help_decrypt.txt");
+const THELP: &str = include_str!("t_help_template.txt");
 
 /* 
     function that matches and handles command-line argumets
 */
-pub fn cli_args() -> (String, String, bool) {
+pub fn cli_args() -> (String, String, String, bool) {
     let mut filename = String::new();
     let mut recipient = String::new();
+    let mut template = String::new();
 
     let matches = Command::new("whispering oaks")
     .author(AUTHOR)
@@ -38,6 +40,17 @@ pub fn cli_args() -> (String, String, bool) {
             .aliases(["receiver", "rec"])
     )
     .arg(
+        Arg::new("template")
+            .help(THELP)
+            .required(false)
+            .short('t')
+            .long("template")
+            .num_args(1)
+            .action(ArgAction::Set)
+            .aliases(["tmp", "temp", "templ"])
+            .conflicts_with("decrypt")
+        )
+    .arg(
         Arg::new("decrypt")
             .help(DHELP)
             .required(false)
@@ -46,6 +59,7 @@ pub fn cli_args() -> (String, String, bool) {
             .long("decrypt")
             .action(ArgAction::SetTrue)
             .aliases(["dec", "decr"])
+            .conflicts_with("template")
         )
     .get_matches();
 
@@ -57,9 +71,13 @@ pub fn cli_args() -> (String, String, bool) {
         recipient = r.to_owned();
         };
 
+    if let Some(t) = matches.get_one::<String>("template") {
+        template = t.to_owned();
+    }
+
     let decrypt = matches.get_flag("decrypt");
    
-    (filename, recipient, decrypt)
+    (filename, recipient, template, decrypt)
 }
 
 /*
