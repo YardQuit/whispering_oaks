@@ -48,7 +48,7 @@ mod tests {
 
     #[test]
     fn test_binary_fs_binary_present() {
-        let status = binary(vec!["rm"]);
+        let status = binary(vec!["rm", "gpg"]);
         assert!(status);
     }
 

@@ -29,7 +29,7 @@ fn main() {
     /*
         verify binaries
     */
-    let status = verify::binary(vec!["gpg", "&editor"]);
+    let status = verify::binary(vec!["gpg", &editor]);
     if !status {
         panic!();
     }
