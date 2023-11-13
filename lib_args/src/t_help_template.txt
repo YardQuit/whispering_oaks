@@ -1,5 +1,4 @@
 To use a template. Templates must be stored
 in "~/.config/whispering_oaks/templates". Templates
-can be encrypted with GnuPG or in clear-text.
-Template names MUST have a file extension such as
-".gpg", ".txt", ".md" etc.
+can be encrypted with GnuPG with file extension ".gpg" 
+or in clear-text format.
