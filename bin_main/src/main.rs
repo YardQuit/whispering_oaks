@@ -23,7 +23,7 @@ fn main() {
     let template_path = format!("{}/templates/", config_path);
     let status = make::dir(template_path.as_str());
     if !status {
-        panic!();
+        std::process::exit(1);
     }
 
     /*
@@ -31,7 +31,7 @@ fn main() {
     */
     let status = verify::binary(vec!["gpg", &editor]);
     if !status {
-        panic!();
+        std::process::exit(1);
     }
 
     /*
@@ -52,14 +52,14 @@ fn main() {
 
         let status = verify::file(temporary_dir_path, &temporary_file_name);
         if !status {
-            panic!();
+            std::process::exit(1);
         }
 
         encrypt::file_encryption(&filename, &recipient, &temporary_file_name);
 
         let status = wreck::file(temporary_dir_path, &temporary_file_name);
         if !status {
-            panic!();
+            std::process::exit(1);
         }
 
         std::process::exit(0);
@@ -68,42 +68,42 @@ fn main() {
     if !template.is_empty() {
         let status = decrypt::template(&temporary_file_name, &template_path, &template);
         if !status {
-            panic!();
+            std::process::exit(1);
         }
 
         init::editor_initiation(&editor, &temporary_file_name);
 
         let status = verify::file(temporary_dir_path, &temporary_file_name);
         if !status {
-            panic!();
+            std::process::exit(1);
         }
 
         encrypt::file_encryption(&filename, &recipient, &temporary_file_name);
 
         let status = wreck::file(temporary_dir_path, &temporary_file_name);
         if !status {
-            panic!();
+            std::process::exit(1);
         }
 
         std::process::exit(0);
     } else {
         let status = make::file(temporary_dir_path, &temporary_file_name);
         if !status {
-            panic!();
+            std::process::exit(1);
         }
 
         init::editor_initiation(&editor, &temporary_file_name);
 
         let status = verify::file(temporary_dir_path, &temporary_file_name);
         if !status {
-            panic!();
+            std::process::exit(1);
         }
 
         encrypt::file_encryption(&filename, &recipient, &temporary_file_name);
 
         let status = wreck::file(temporary_dir_path, &temporary_file_name);
         if !status {
-            panic!();
+            std::process::exit(1);
         }
 
         std::process::exit(0);

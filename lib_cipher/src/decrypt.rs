@@ -34,14 +34,9 @@ pub fn file(filename: &str, file_name: &str) -> String {
 
 pub fn template(file_name: &str, template_path: &str, template: &str) -> bool  {
     let file_name = Path::new("/dev/shm/").join(file_name);
-    let template = Path::new(template_path).join(template);
-    let template_ext = template
-        .extension()
-        .expect("\nerror: template must have a file extention\n")
-        .to_string_lossy()
-        .to_string();
+    let template = format!("{}{}", template_path, template);
 
-    if template_ext == "gpg" {
+    if template.ends_with(".gpg") {
         let mut attempts = 0;
         loop {
             println!("passphrase attempt: {}/5", attempts + 1);
@@ -63,12 +58,11 @@ pub fn template(file_name: &str, template_path: &str, template: &str) -> bool  {
             }
         }
     } else {
-        println!("\ndebug: file does not end with .gpg");
         let status = fs::copy(&template, &file_name);
         match status {
             Ok(_) => true,
             Err(e) => {
-                eprintln!("\nerror: faild to copy template with code: {}\n", e);
+                eprintln!("\nerror: template failed with code: {}\n", e);
                 false
             },
         }
