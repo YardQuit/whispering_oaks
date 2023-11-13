@@ -6,7 +6,7 @@ pub fn file(filename: &str, file_name: &str) -> String {
     let file_name = Path::new("/dev/shm/").join(file_name);
     let filename = Path::new("").join(filename);
     let mut attempts = 0;
-
+   
     loop {
         println!("passphrase attempt: {}/5", attempts + 1);
         let command_gpg = Command::new("gpg")

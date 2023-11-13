@@ -46,6 +46,13 @@ fn main() {
         3. cleate a new file without pre-loaded with template data.
     */
     if decrypt {
+        let status = verify::file("", &filename);
+        if !status {
+            eprintln!("\nerror: verify '-f <filename>'");
+            std::process::exit(1);
+        }
+        
+
         let filename = decrypt::file(&filename, &temporary_file_name);
 
         init::editor_initiation(&editor, &temporary_file_name);
