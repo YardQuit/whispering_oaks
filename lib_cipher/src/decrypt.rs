@@ -1,6 +1,7 @@
 use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::fs;
+use lib_fs::verify;
 
 pub fn file(filename: &str, file_name: &str) -> String {
     let file_name = Path::new("/dev/shm/").join(file_name);
@@ -37,7 +38,9 @@ pub fn template(file_name: &str, template_path: &str, template: &str) -> bool  {
     let file_name = Path::new("/dev/shm/").join(file_name);
     let template = format!("{}{}", template_path, template);
 
-    if template.ends_with(".gpg") {
+    let gpg_check = verify::f_gpg("", &template);
+    if gpg_check {
+    // if template.ends_with(".gpg") {
         let mut attempts = 0;
         loop {
             println!("passphrase attempt: {}/5", attempts + 1);

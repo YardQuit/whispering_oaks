@@ -53,6 +53,17 @@ pub fn f_size(dir_path: &str, file_name: &str) -> bool {
         }
     }
 }
+
+pub fn f_gpg(dir_path: &str, file_name: &str) -> bool {
+    let file_path = format!("{}{}", dir_path, file_name);
+    let output = Command::new("file")
+        .arg(file_path)
+        .output();
+
+    let file_type = String::from_utf8_lossy(&output.unwrap().stdout).trim().to_string();
+        file_type.contains("encrypt")
+}
+
 /*
     UNIT-TESTS SECTION BEGINS
 */

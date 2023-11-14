@@ -29,7 +29,7 @@ fn main() {
     /*
         verify binaries
     */
-    let status = verify::binary(vec!["gpg", &editor]);
+    let status = verify::binary(vec!["gpg", &editor, "file"]);
     if !status {
         std::process::exit(1);
     }
@@ -51,8 +51,13 @@ fn main() {
             eprintln!("\nerror: verify '-f <filename>'");
             std::process::exit(1);
         }
-        
 
+        let status = verify::f_gpg("", &filename);
+        if !status {
+            eprintln!("\nerror: file doesn't seam to be encrypted");
+            std::process::exit(1);
+        }
+        
         let filename = decrypt::file(&filename, &temporary_file_name);
 
         init::editor_initiation(&editor, &temporary_file_name);
