@@ -20,7 +20,7 @@ pub fn file(dir_path: &str, file_name: &str) -> bool {
     match status {
         Ok(_) => true,
         Err(e) => {
-            println!("\nerror: failed to create file {}, with code: {}", file_name, e);
+            eprintln!("\nerror: failed to create file {}, with code: {}", file_name, e);
             false
         },
     }
@@ -38,7 +38,7 @@ pub fn dir(dir_path: &str) -> bool {
     match status {
         Ok(_) => true,
         Err(e) => {
-            println!("\nerror: failed to create directory structure, with code: {}", e);
+            eprintln!("\nerror: failed to create directory structure, with code: {}", e);
             false
         },
     }

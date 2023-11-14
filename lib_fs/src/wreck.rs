@@ -11,7 +11,7 @@ pub fn file(dir_path: &str, file_name: &str) -> bool {
     match status {
         Ok(_) => true,
         Err(e) => {
-            println!("\nerror: failed to destroy file {}, with code: {}", file_name, e);
+            eprintln!("\nerror: failed to destroy file {}, with code: {}", file_name, e);
             false
         },
     }

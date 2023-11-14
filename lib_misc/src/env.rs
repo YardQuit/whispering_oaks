@@ -10,14 +10,18 @@ pub fn editor_selection() -> String {
         return editor;
     }
 
-    panic!("\nerror: there is no editor set as either prffered or default)");    
+    eprintln!("\nerror: there is no editor set as either prffered or default)");    
+    std::process::exit(1);
 }
 
 pub fn home_path() -> String {
     let home: Option<std::path::PathBuf> = dirs::home_dir();
     match home {
         Some(home_path) => home_path.to_string_lossy().to_string(),
-        None => panic!("\nerror: could not find user home directory"),
+        None => {
+            eprintln!("\nerror: could not find user home directory");
+            std::process::exit(1);
+        },
     }
 }
 
@@ -25,7 +29,10 @@ pub fn config_path() -> String {
     let config: Option<std::path::PathBuf> = dirs::config_dir();
     match config {
         Some(config_path) => config_path.to_string_lossy().to_string(),
-        None => panic!("\nerror: could not find user config directory"),
+        None => {
+            eprintln!("\nerror: could not find user config directory");
+            std::process::exit(1);
+        }
     }
 }
 /*

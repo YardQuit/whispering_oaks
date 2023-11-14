@@ -22,7 +22,8 @@ pub fn file(filename: &str, file_name: &str) -> String {
         } else {
             attempts += 1;
             if attempts >= 5 {
-                panic!("\nerror: failed to provide the correct passphrase");
+                eprintln!("\nerror: faild to provide the correct passphrase");
+                std::process::exit(1);
             }
         }
     }
@@ -53,7 +54,8 @@ pub fn template(file_name: &str, template_path: &str, template: &str) -> bool  {
             } else {
                 attempts += 1;
                 if attempts >= 5 {
-                    panic!("\nerror: failed to provide the correct passphrase\n");
+                    eprintln!("\nerror: faild to provide the correct passphrase");
+                    std::process::exit(1);
                 }
             }
         }

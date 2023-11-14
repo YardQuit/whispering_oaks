@@ -9,7 +9,8 @@ pub fn editor_initiation(editor: &str, file_name: &str) {
     match status {
         Ok(_) => {}
         Err(e) => {
-            panic!("\nerror: failed with editor initiation with code: {}\n", e);
+            eprintln!("\nerror: failed with editor initiation with code: {}\n", e);
+            std::process::exit(1);
         }
     }
 }

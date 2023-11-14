@@ -20,7 +20,7 @@ pub fn file_encryption(filename: &str, recipient: &str, file_name: &str) {
                 writeln!(handle, "       The unencrypted file may still be found in memory").unwrap();
                 writeln!(handle, "       as /dev/shm/{}\n", file_name).unwrap();
                 handle.flush().unwrap();
-                panic!();
+                std::process::exit(1);
             } else {
                 println!("success: encryption was successful");
             }
@@ -32,7 +32,8 @@ pub fn file_encryption(filename: &str, recipient: &str, file_name: &str) {
             writeln!(handle, "       The unencrypted file may still be found in memory").unwrap();
             writeln!(handle, "       as /dev/shm/{}\n", file_name).unwrap();
             handle.flush().unwrap();
-            panic!("\nerror: program terminated with code: {}\n", e);
+            eprintln!("\nerror: program terminated with code: {}\n", e);
+            std::process::exit(1);
         },
     }
 }

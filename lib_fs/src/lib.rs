@@ -1,3 +1,3 @@
 pub mod make;
-pub mod wreck;
 pub mod verify;
+pub mod wreck;
