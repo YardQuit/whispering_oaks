@@ -1,5 +1,7 @@
 use std::process::Command;
 use std::path::Path;
+use std::os::linux::fs::MetadataExt;
+use std::fs;
 
 /*
     function takes a path and verifies if the file is present on the file system
@@ -38,6 +40,19 @@ pub fn dir(dir_path: &str) -> bool {
     dir_path.is_dir()
 }
 
+pub fn f_size(dir_path: &str, file_name: &str) -> bool {
+    let file_path = format!("{}{}", dir_path, file_name);
+    let metadata = fs::metadata(file_path);
+    match metadata {
+        Ok(metadata) => {
+            metadata.st_size() > 0                     // returns true or false
+        },
+        Err(e) => {
+            eprintln!("\nerror: could not read metadata with code: {}", e);
+            std::process::exit(1);
+        }
+    }
+}
 /*
     UNIT-TESTS SECTION BEGINS
 */

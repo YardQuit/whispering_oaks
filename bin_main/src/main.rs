@@ -106,6 +106,15 @@ fn main() {
             std::process::exit(1);
         }
 
+        let status = verify::f_size(temporary_dir_path, &temporary_file_name);
+        if !status {
+            let status = wreck::file(temporary_dir_path, &temporary_file_name);
+            if !status {
+                std::process::exit(1);
+            }
+            std::process::exit(0);
+        }
+
         encrypt::file_encryption(&filename, &recipient, &temporary_file_name);
 
         let status = wreck::file(temporary_dir_path, &temporary_file_name);
