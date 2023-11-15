@@ -54,7 +54,7 @@ fn main() {
 
         let status = verify::f_gpg("", &filename);
         if !status {
-            eprintln!("\nerror: file doesn't seam to be encrypted");
+            eprintln!("\nerror: file doesn't seem to be encrypted");
             std::process::exit(1);
         }
         

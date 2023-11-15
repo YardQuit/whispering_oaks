@@ -2,6 +2,8 @@ use std::process::Command;
 use std::path::Path;
 use std::os::linux::fs::MetadataExt;
 use std::fs;
+use std::fs::{File};
+use std::io::{self, Read};
 
 /*
     function takes a path and verifies if the file is present on the file system
@@ -56,13 +58,35 @@ pub fn f_size(dir_path: &str, file_name: &str) -> bool {
 
 pub fn f_gpg(dir_path: &str, file_name: &str) -> bool {
     let file_path = format!("{}{}", dir_path, file_name);
-    let output = Command::new("file")
-        .arg(file_path)
-        .output();
-
-    let file_type = String::from_utf8_lossy(&output.unwrap().stdout).trim().to_string();
-        file_type.contains("encrypt")
+    match read_file_header(&file_path) {
+        Ok(header) => {
+            header[0] == 133 && header[1] == 2 && header[2] == 12 && header[3] == 3
+        },
+        Err(e) => {
+            eprintln!("\nerror: failed to read file header with code: {}", e);
+            false
+        },  
+    }
 }
+
+fn read_file_header(file_path: &str) -> io::Result<Vec<u8>> {
+    let mut file = File::open(file_path)?;
+    const HEADER_SIZE: usize = 4;
+    let mut header = vec![0u8; HEADER_SIZE];
+
+    file.read_exact(&mut header)?;
+    Ok(header)
+}
+
+// pub fn f_gpg(dir_path: &str, file_name: &str) -> bool {
+//     let file_path = format!("{}{}", dir_path, file_name);
+//     let output = Command::new("file")
+//         .arg(file_path)
+//         .output();
+
+//     let file_type = String::from_utf8_lossy(&output.unwrap().stdout).trim().to_string();
+//         file_type.contains("encrypt")
+// }
 
 /*
     UNIT-TESTS SECTION BEGINS
