@@ -55,27 +55,6 @@ pub fn f_meta(dir_path: &str, file_name: &str) -> Option<SystemTime> {
         }
     }
 }
-// pub fn f_meta(dir_path: &str, file_name: &str) -> Option<SystemTime> {
-//     let file_path = Path::new(dir_path).join(file_name);
-//     let mut time = SystemTime::now();
-    
-//     let status = file(dir_path, file_name);
-//     if !status {
-//         eprintln!("\n:error: failed to find file");
-//     }
-
-//     let metadata = fs::metadata(file_path);
-//     match metadata {
-//         Ok(metadata) => {
-//             time = metadata.modified();
-//             Some(time)
-//         },
-//         Err(e) => {
-//             eprintln!("error: failed to read metadata with code: {}", e);
-//             None
-//         },
-//     }
-// }
 
 /*
     function takes a path and verifies if the path is present on the file system

@@ -9,7 +9,7 @@ members = [
     "lib_fs",
 ]
 
-# specify the memebers to operate on from workspace root (can omit crates)
+# specify the members to operate on from workspace root (can omit crates)
 # can be omited while compiling with option --workspace
 default-members = [
     "bin_main",
@@ -27,7 +27,7 @@ default-members = [
 # sets workspace resolver to verison 2
 resolver = "2"
 
-# general package meta-data
+# general package metadata
 # for sub-crates to interit, use keyword: {key}.workspace = true
 # e.g. "authors.workspace = true" in sub-crates Cargo.toml [package] section
 [workspace.package]
