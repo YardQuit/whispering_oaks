@@ -21,8 +21,6 @@ pub fn file_encryption(filename: &str, recipient: &str, file_name: &str) {
                 writeln!(handle, "       as /dev/shm/{}\n", file_name).unwrap();
                 handle.flush().unwrap();
                 std::process::exit(1);
-            } else {
-                println!("success: encryption was successful");
             }
         },
         Err(e) => {

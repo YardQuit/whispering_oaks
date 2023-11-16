@@ -9,7 +9,6 @@ pub fn file(filename: &str, file_name: &str) -> String {
     let mut attempts = 0;
    
     loop {
-        println!("passphrase attempt: {}/5", attempts + 1);
         let command_gpg = Command::new("gpg")
             .arg("--pinentry-mode").arg("loopback")
             .arg("-o").arg(&file_name)
@@ -18,7 +17,6 @@ pub fn file(filename: &str, file_name: &str) -> String {
             .expect("\nerror: failed to execute command");
 
         if command_gpg.status.success() {
-            println!("success: password accepted");
             break;
         } else {
             attempts += 1;
@@ -43,7 +41,6 @@ pub fn template(file_name: &str, template_path: &str, template: &str) -> bool  {
     // if template.ends_with(".gpg") {
         let mut attempts = 0;
         loop {
-            println!("passphrase attempt: {}/5", attempts + 1);
             let command_gpg = Command::new("gpg")
                 .arg("--pinentry-mode").arg("loopback")
                 .arg("-o").arg(&file_name)
@@ -52,7 +49,6 @@ pub fn template(file_name: &str, template_path: &str, template: &str) -> bool  {
                 .expect("\nerror: failed to execute command\n");
 
             if command_gpg.status.success() {
-                println!("success: password accepted");
                 return true;
             } else {
                 attempts += 1;

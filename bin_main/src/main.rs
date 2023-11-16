@@ -1,3 +1,4 @@
+// use std::time::SystemTime;
 use lib_args::matches;
 use lib_cipher::{decrypt, encrypt};
 use lib_fs::{make, verify, wreck};
@@ -60,6 +61,8 @@ fn main() {
         
         let filename = decrypt::file(&filename, &temporary_file_name);
 
+        let modtime_1 = verify::f_meta(temporary_dir_path, &temporary_file_name).unwrap();
+
         init::editor_initiation(&editor, &temporary_file_name);
 
         let status = verify::file(temporary_dir_path, &temporary_file_name);
@@ -67,7 +70,10 @@ fn main() {
             std::process::exit(1);
         }
 
-        encrypt::file_encryption(&filename, &recipient, &temporary_file_name);
+        let modtime_2 = verify::f_meta(temporary_dir_path, &temporary_file_name).unwrap();
+        if modtime_2 > modtime_1 {
+            encrypt::file_encryption(&filename, &recipient, &temporary_file_name);
+        }
 
         let status = wreck::file(temporary_dir_path, &temporary_file_name);
         if !status {
@@ -83,6 +89,8 @@ fn main() {
             std::process::exit(1);
         }
 
+        let modtime_1 = verify::f_meta(temporary_dir_path, &temporary_file_name).unwrap();
+
         init::editor_initiation(&editor, &temporary_file_name);
 
         let status = verify::file(temporary_dir_path, &temporary_file_name);
@@ -90,7 +98,10 @@ fn main() {
             std::process::exit(1);
         }
 
-        encrypt::file_encryption(&filename, &recipient, &temporary_file_name);
+        let modtime_2 = verify::f_meta(temporary_dir_path, &temporary_file_name).unwrap();
+        if modtime_2 > modtime_1 {
+            encrypt::file_encryption(&filename, &recipient, &temporary_file_name);
+        }
 
         let status = wreck::file(temporary_dir_path, &temporary_file_name);
         if !status {
