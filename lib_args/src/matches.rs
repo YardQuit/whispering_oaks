@@ -2,7 +2,7 @@
 use clap::{Arg, ArgAction, Command};
 
 const AUTHOR: &str = "Author: Michael A Jones (github: YardQuit)";
-const ABOUT: &str = "Encrypt your documents using GPG while leveraging your preferred editor.";
+const ABOUT: &str = "Encrypt your documents using GnuPG while leveraging your preferred editor.";
 const FHELP: &str = include_str!("t_help_filename.txt");
 const RHELP: &str = include_str!("t_help_recipient.txt");
 const DHELP: &str = include_str!("t_help_decrypt.txt");
@@ -25,8 +25,8 @@ pub fn cli_args() -> (String, String, String, bool, bool, bool) {
             Arg::new("filename")
                 .help(FHELP)
                 .required(true)
-                .short('f')
-                .long("filename")
+                // .short('f')
+                // .long("filename")
                 .num_args(1)
                 .action(ArgAction::Set)
                 .aliases(["file", "file-name", "name"]),
@@ -34,12 +34,13 @@ pub fn cli_args() -> (String, String, String, bool, bool, bool) {
         .arg(
             Arg::new("recipient")
                 .help(RHELP)
-                .required(true)
+                .required(false)
                 .short('r')
                 .long("recipient")
                 .num_args(1..)
-                .action(ArgAction::Set)
-                .aliases(["receiver", "rec"]),
+                .action(ArgAction::Append)
+                .aliases(["receiver", "rec"])
+                // .default_value("")
         )
         .arg(
             Arg::new("template")
