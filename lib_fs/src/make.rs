@@ -1,5 +1,5 @@
 use std::path::Path;
-use std::fs::{File, create_dir_all};
+use std::fs::{File, create_dir_all, read_dir};
 
 /*
     function takes a path and creates a file on the file system
@@ -27,6 +27,9 @@ pub fn file(dir_path: &str, file_name: &str) -> bool {
     
 }
 
+/*
+    function takes a path and creates a file system directory structure
+*/
 pub fn dir(dir_path: &str) -> bool {
     let invalid = ['|', '&', '$', '%', '<', '>', '\\', '*', ':'];
     if dir_path.is_empty() || dir_path.contains(invalid) {
@@ -43,6 +46,32 @@ pub fn dir(dir_path: &str) -> bool {
         },
     }
 }
+
+/*
+    function takes a path, forwards request to list_directory and returns
+    a boolian if successful or not
+*/
+pub fn list(dir_path: &str) -> bool {
+    let status = list_directory(dir_path);
+    status.is_ok()
+}
+
+/*
+    function takes a dir_path and list directory files
+    returns Ok() or io_Err to caller
+*/
+fn list_directory(dir_path: &str) -> Result<(), std::io::Error> {
+        let entries = read_dir(dir_path)?;
+
+        println!("Avaliable templates:");
+        println!("--------------------------------------------------");
+        for entry in entries {
+            let entry = entry?;
+            let path = entry.file_name().to_string_lossy().to_string();
+            println!("{}", path);
+        }
+        Ok(())
+    }
 
 /*
     UNIT-TESTS SECTION BEGINS

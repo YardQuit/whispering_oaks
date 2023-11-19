@@ -38,14 +38,47 @@ fn main() {
     /*
         get provided valiues given from command-line as arguments
     */
-    let (filename, recipient, template, decrypt) = matches::cli_args();
+    let (filename, 
+        recipient, 
+        template, 
+        decrypt, 
+        template_list,
+        clear) = matches::cli_args();
 
     /*
         execute tracks depending on provided command-line argumets
+        0. lists template files stored in .config/whispering_oaks/templates
         1. decrypt existing file for editing
         2. decrypt or load template file to be used with for a new file
         3. cleate a new file without pre-loaded with template data.
     */
+    //
+    // TEMPLATE_LIST
+    //
+    if template_list {
+        let status = make::list(&template_path);
+        if !status {
+            eprintln!("\nerror: could not list directory");
+            std::process::exit(1);
+        }
+        std::process::exit(0);
+    }
+
+    //
+    // CLEAR SHARED MEMORY
+    //
+    if clear {
+        let status = wreck::clear(temporary_dir_path);
+        if !status {
+            eprintln!("\nerror: could not clear shared memory");
+            std::process::exit(1);
+        }
+        std::process::exit(0);
+    }
+
+    //
+    // USE TEMPLATE
+    //
     if decrypt {
         let status = verify::file("", &filename);
         if !status {
@@ -58,7 +91,7 @@ fn main() {
             eprintln!("\nerror: file doesn't seem to be encrypted");
             std::process::exit(1);
         }
-        
+
         let filename = decrypt::file(&filename, &temporary_file_name);
 
         let modtime_1 = verify::f_meta(temporary_dir_path, &temporary_file_name).unwrap();
@@ -79,10 +112,12 @@ fn main() {
         if !status {
             std::process::exit(1);
         }
-
         std::process::exit(0);
     }
 
+    //
+    // EDIT GPG ENC FILE
+    //
     if !template.is_empty() {
         let status = decrypt::template(&temporary_file_name, &template_path, &template);
         if !status {
@@ -107,9 +142,11 @@ fn main() {
         if !status {
             std::process::exit(1);
         }
-
         std::process::exit(0);
     } else {
+    //
+    // CREATE NEW ENC FILE WITHOUT TEMPLATE
+    //
         let status = make::file(temporary_dir_path, &temporary_file_name);
         if !status {
             std::process::exit(1);
@@ -137,7 +174,6 @@ fn main() {
         if !status {
             std::process::exit(1);
         }
-
         std::process::exit(0);
     }
 }
