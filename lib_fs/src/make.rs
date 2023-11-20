@@ -52,7 +52,9 @@ pub fn dir(dir_path: &str) -> bool {
     a boolian if successful or not
 */
 pub fn list(dir_path: &str) -> bool {
-    let status = list_directory(dir_path);
+    println!("Avaliable templates:");
+    println!("--------------------------------------------------");
+    let status = list_directory(dir_path, dir_path);
     status.is_ok()
 }
 
@@ -60,18 +62,23 @@ pub fn list(dir_path: &str) -> bool {
     function takes a dir_path and list directory files
     returns Ok() or io_Err to caller
 */
-fn list_directory(dir_path: &str) -> Result<(), std::io::Error> {
-        let entries = read_dir(dir_path)?;
+fn list_directory(dir_path: &str, base_path: &str) -> Result<(), std::io::Error> {
+    let entries = read_dir(dir_path)?;
 
-        println!("Avaliable templates:");
-        println!("--------------------------------------------------");
-        for entry in entries {
-            let entry = entry?;
-            let path = entry.file_name().to_string_lossy().to_string();
-            println!("{}", path);
+    for entry in entries {
+        let entry = entry?;
+        let path = entry.path();
+        if path.is_file() {
+            let relative_path = path.strip_prefix(base_path)
+                .map(|p| p.to_string_lossy().to_string())
+                .unwrap_or_else(|_| path.to_string_lossy().to_string());
+            println!("{}", relative_path);
+        } else if path.is_dir() {
+            list_directory(&path.to_string_lossy(), base_path)?;
         }
-        Ok(())
     }
+    Ok(())
+}
 
 /*
     UNIT-TESTS SECTION BEGINS
