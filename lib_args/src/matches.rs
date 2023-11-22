@@ -1,5 +1,6 @@
 // extern crate clap;
 use clap::{Arg, ArgAction, Command};
+use lib_fs::read;
 
 const AUTHOR: &str = "Author: Michael A Jones (github: YardQuit)";
 const ABOUT: &str = "Encrypt your documents using GnuPG while leveraging your preferred editor.";
@@ -13,10 +14,13 @@ const CHELP: &str = include_str!("t_help_clear.txt");
 /*
     function that matches and handles command-line argumets
 */
-pub fn cli_args() -> (String, String, String, bool, bool, bool) {
+pub fn cli_args(dir_path: &str, file_name: &str) -> (String, String, String, bool, bool, bool) {
     let mut filename = String::new();
     let mut recipient = String::new();
     let mut template = String::new();
+
+    let dynamic_def_recipient = read::read_toml(dir_path, file_name);
+    let static_def_recipient: &'static str = Box::leak(dynamic_def_recipient.into_boxed_str());
 
     let matches = Command::new("whispering oaks")
         .author(AUTHOR)
@@ -34,13 +38,13 @@ pub fn cli_args() -> (String, String, String, bool, bool, bool) {
         .arg(
             Arg::new("recipient")
                 .help(RHELP)
-                .required(false)
+                .required(static_def_recipient.is_empty())
                 .short('r')
                 .long("recipient")
                 .num_args(1..)
                 .action(ArgAction::Append)
                 .aliases(["receiver", "rec"])
-                // .default_value("")
+                .default_value_if("recipient", "", static_def_recipient)
         )
         .arg(
             Arg::new("template")
@@ -76,7 +80,7 @@ pub fn cli_args() -> (String, String, String, bool, bool, bool) {
                     "recipient",
                     "template",
                     "decrypt",
-                    "remplate_list",
+                    "template_list",
                 ]),
         )
         .arg(

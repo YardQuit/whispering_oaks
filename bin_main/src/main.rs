@@ -43,7 +43,7 @@ fn main() {
         template, 
         decrypt, 
         template_list,
-        clear) = matches::cli_args();
+        clear) = matches::cli_args(&config_path, "config.toml");
 
     /*
         execute tracks depending on provided command-line argumets
