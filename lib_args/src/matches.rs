@@ -30,7 +30,7 @@ pub fn cli_args(dir_path: &str, file_name: &str) -> (String, String, String, boo
                 .help(FHELP)
                 .required(true)
                 .num_args(1)
-                .action(ArgAction::Set)
+                .action(ArgAction::Set),
         )
         .arg(
             Arg::new("recipient")
@@ -38,10 +38,10 @@ pub fn cli_args(dir_path: &str, file_name: &str) -> (String, String, String, boo
                 .required(static_def_recipient.is_empty())
                 .short('r')
                 .long("recipient")
-                .num_args(1)
-                .action(ArgAction::Append)
                 .aliases(["receiver", "rec"])
-                .default_value_if("recipient", "", static_def_recipient)
+                .num_args(1)
+                .action(ArgAction::Set)
+                .default_value(static_def_recipient),
         )
         .arg(
             Arg::new("template")
@@ -87,8 +87,8 @@ pub fn cli_args(dir_path: &str, file_name: &str) -> (String, String, String, boo
                 .short('d')
                 .num_args(0)
                 .long("decrypt")
-                .action(ArgAction::SetTrue)
                 .aliases(["dec", "decr"])
+                .action(ArgAction::SetTrue)
                 .conflicts_with("template"),
         )
         .get_matches();
