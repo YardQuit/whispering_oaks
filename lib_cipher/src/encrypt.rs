@@ -5,10 +5,18 @@ pub fn file_encryption(filename: &str, recipient: &str, file_name: &str) {
     let filename = format!("{}.gpg", filename);
     
     let mut command_gpg = Command::new("gpg");
-    command_gpg.arg("-o").arg(&filename);
-    command_gpg.arg("-e");
-    command_gpg.arg("-r").arg(recipient);
-    command_gpg.arg(format!("/dev/shm/{}", file_name));
+
+    if recipient == "_omit_recipient_" {
+        command_gpg.arg("-o").arg(&filename);
+        command_gpg.arg("-e");
+        command_gpg.arg(format!("/dev/shm/{}", file_name));
+        
+    } else {
+        command_gpg.arg("-o").arg(&filename);
+        command_gpg.arg("-e");
+        command_gpg.arg("-r").arg(recipient);
+        command_gpg.arg(format!("/dev/shm/{}", file_name));
+    }
 
     let status = command_gpg.status();
     match status {

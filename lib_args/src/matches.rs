@@ -10,6 +10,7 @@ const DHELP: &str = include_str!("t_help_decrypt.txt");
 const THELP: &str = include_str!("t_help_template.txt");
 const LHELP: &str = include_str!("t_help_template_list.txt");
 const CHELP: &str = include_str!("t_help_clear.txt");
+const OHELP: &str = include_str!("t_help_omit_recipient.txt");
 
 /*
     function that matches and handles command-line argumets
@@ -65,6 +66,27 @@ pub fn cli_args(dir_path: &str, file_name: &str) -> (String, String, String, boo
                 .conflicts_with_all(["filename", "recipient", "template", "decrypt", "clear"]),
         )
         .arg(
+            Arg::new("omit_recipient")
+                .help(OHELP)
+                .required(false)
+                .short('R')
+                .num_args(0)
+                .long("omit_recipient")
+                .action(ArgAction::SetTrue)
+                .conflicts_with("recipient"),
+        )
+        .arg(
+            Arg::new("decrypt")
+                .help(DHELP)
+                .required(false)
+                .short('d')
+                .num_args(0)
+                .long("decrypt")
+                .aliases(["dec", "decr"])
+                .action(ArgAction::SetTrue)
+                .conflicts_with("template"),
+        )
+        .arg(
             Arg::new("clear")
                 .help(CHELP)
                 .required(false)
@@ -79,17 +101,6 @@ pub fn cli_args(dir_path: &str, file_name: &str) -> (String, String, String, boo
                     "decrypt",
                     "template_list",
                 ]),
-        )
-        .arg(
-            Arg::new("decrypt")
-                .help(DHELP)
-                .required(false)
-                .short('d')
-                .num_args(0)
-                .long("decrypt")
-                .aliases(["dec", "decr"])
-                .action(ArgAction::SetTrue)
-                .conflicts_with("template"),
         )
         .get_matches();
 
@@ -108,6 +119,11 @@ pub fn cli_args(dir_path: &str, file_name: &str) -> (String, String, String, boo
     let decrypt = matches.get_flag("decrypt");
     let template_list = matches.get_flag("template_list");
     let clear = matches.get_flag("clear");
+
+    let omit = matches.get_flag("omit_recipient");
+    if omit {
+        recipient = String::from("_omit_recipient_");
+    }
 
     (filename, recipient, template, decrypt, template_list, clear)
 }
