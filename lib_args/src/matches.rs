@@ -29,11 +29,8 @@ pub fn cli_args(dir_path: &str, file_name: &str) -> (String, String, String, boo
             Arg::new("filename")
                 .help(FHELP)
                 .required(true)
-                // .short('f')
-                // .long("filename")
                 .num_args(1)
                 .action(ArgAction::Set)
-                .aliases(["file", "file-name", "name"]),
         )
         .arg(
             Arg::new("recipient")
@@ -41,7 +38,7 @@ pub fn cli_args(dir_path: &str, file_name: &str) -> (String, String, String, boo
                 .required(static_def_recipient.is_empty())
                 .short('r')
                 .long("recipient")
-                .num_args(1..)
+                .num_args(1)
                 .action(ArgAction::Append)
                 .aliases(["receiver", "rec"])
                 .default_value_if("recipient", "", static_def_recipient)
