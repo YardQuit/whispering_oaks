@@ -21,6 +21,6 @@ path = "src/main.rs"
 [dependencies]
 lib_misc = { path = "../lib_misc" }
 lib_fs = { path = "../lib_fs" }
-lib_procs = { path = "../lib_proc" }
+lib_procs = { path = "../lib_procs" }
 lib_cipher = { path = "../lib_cipher" }
 lib_args = { path = "../lib_args" }

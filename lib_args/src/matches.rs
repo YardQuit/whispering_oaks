@@ -11,14 +11,25 @@ const THELP: &str = include_str!("t_help_template.txt");
 const LHELP: &str = include_str!("t_help_template_list.txt");
 const CHELP: &str = include_str!("t_help_clear.txt");
 const OHELP: &str = include_str!("t_help_omit_recipient.txt");
+const KHELP: &str = include_str!("t_help_keylist.txt");
+
+pub struct ArgumentsFlags {
+    pub filename: String,
+    pub recipient: String,
+    pub template: String,
+    pub decrypt: bool,
+    pub template_list: bool,
+    pub clear: bool,
+    pub keylist: bool,
+}
 
 /*
     function that matches and handles command-line argumets
 */
-pub fn cli_args(dir_path: &str, file_name: &str) -> (String, String, String, bool, bool, bool) {
+pub fn cli_args(dir_path: &str, file_name: &str) -> ArgumentsFlags {
     let mut filename = String::new();
     let mut recipient = String::new();
-    let mut template = String::new();
+    let mut template= String::new();
 
     let dynamic_def_recipient = read::read_toml(dir_path, file_name);
     let static_def_recipient: &'static str = Box::leak(dynamic_def_recipient.into_boxed_str());
@@ -63,7 +74,17 @@ pub fn cli_args(dir_path: &str, file_name: &str) -> (String, String, String, boo
                 .long("template_list")
                 .num_args(0)
                 .action(ArgAction::SetTrue)
-                .conflicts_with_all(["filename", "recipient", "template", "decrypt", "clear"]),
+                .conflicts_with_all(["filename", "recipient", "template", "decrypt", "clear", "keys"]),
+        )
+        .arg(
+            Arg::new("keylist")
+                .help(KHELP)
+                .required(false)
+                .short('k')
+                .long("keylist")
+                .num_args(0)
+                .action(ArgAction::SetTrue)
+                .conflicts_with_all(["filename", "recipient", "template", "decrypt", "clear", "template_list"]),
         )
         .arg(
             Arg::new("omit_recipient")
@@ -104,28 +125,56 @@ pub fn cli_args(dir_path: &str, file_name: &str) -> (String, String, String, boo
         )
         .get_matches();
 
-    if let Some(f) = matches.get_one::<String>("filename") {
-        filename = f.to_owned();
-    };
+    /*
+    matches is returning a Some or None, which means that we cannot unwrap the 
+    match inside the struct without causing panic if value is omitted.
+    for now this is handled befor structure is constructed, later it might be 
+    refactored to use ".map_or_else(String::new, |s|s.to_string());" inside the
+    constructure.
+    
+    if recipient has been specified, the "recipient" variable is set to use such
+    value else default value is set.
 
+    if the "-R" flag is set which omits recipients is set, the "recipient"
+    variable is set to "_omit_recipient_" which overrides the default value.
+    */
     if let Some(r) = matches.get_one::<String>("recipient") {
         recipient = r.to_owned();
     };
-
-    if let Some(t) = matches.get_one::<String>("template") {
-        template = t.to_owned();
-    }
-
-    let decrypt = matches.get_flag("decrypt");
-    let template_list = matches.get_flag("template_list");
-    let clear = matches.get_flag("clear");
 
     let omit = matches.get_flag("omit_recipient");
     if omit {
         recipient = String::from("_omit_recipient_");
     }
 
-    (filename, recipient, template, decrypt, template_list, clear)
+    /*
+    if template has a value, the variable "template" is set, otherwise it's 
+    omited.
+    */
+    if let Some(t) = matches.get_one::<String>("template") {
+        template = t.to_owned();
+    }
+
+    /*
+    if filename has a value, the variable "filename" is set, otherwise it's 
+    omited.
+    */
+    if let Some(f) = matches.get_one::<String>("filename") {
+        filename = f.to_owned();
+    }
+
+    /*
+    returns the Arguments struct to main function
+    */
+    ArgumentsFlags {
+        filename,
+        recipient, 
+        template,
+        decrypt: matches.get_flag("decrypt"),
+        template_list: matches.get_flag("template_list"),
+        clear: matches.get_flag("clear"),
+        keylist: matches.get_flag("keylist"),
+    }
 }
 
 /*

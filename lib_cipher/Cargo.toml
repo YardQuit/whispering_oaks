@@ -15,3 +15,5 @@ readme.workspace = true
 
 [dependencies]
 lib_fs = { path = "../lib_fs" }
+lib_misc = { path = "../lib_misc" }
+lib_procs = { path = "../lib_procs" }

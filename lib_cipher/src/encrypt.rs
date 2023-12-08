@@ -1,45 +1,31 @@
-use std::io::{self, BufWriter, Write};
-use std::process::Command;
+// use lib_misc::err;
+// use lib_procs::build::GnuPgCommandBuilder;
 
-pub fn file_encryption(filename: &str, recipient: &str, file_name: &str) {
-    let filename = format!("{}.gpg", filename);
-    
-    let mut command_gpg = Command::new("gpg");
+// pub fn file_encryption(output_file: &str, recipient: &str, input_file: &str) {
+//     let output_file = format!("{}.gpg", output_file);
 
-    if recipient == "_omit_recipient_" {
-        command_gpg.arg("-o").arg(&filename);
-        command_gpg.arg("-e");
-        command_gpg.arg(format!("/dev/shm/{}", file_name));
-        
-    } else {
-        command_gpg.arg("-o").arg(&filename);
-        command_gpg.arg("-e");
-        command_gpg.arg("-r").arg(recipient);
-        command_gpg.arg(format!("/dev/shm/{}", file_name));
-    }
+//     let mut gnupg_command = GnuPgCommandBuilder::new()
+//         .set_output_file(&output_file)
+//         .set_encrypt()
+//         .set_recipient(recipient)
+//         .set_input_file(input_file)
+//         .build();
 
-    let status = command_gpg.status();
-    match status {
-        Ok(code) => {
-            if !code.success() {
-                let stdout = io::stdout();
-                let mut handle = BufWriter::new(stdout.lock());
-                writeln!(handle, "\nerror: WARNING! something went wrong with the encryption").unwrap();
-                writeln!(handle, "       The unencrypted file may still be found in memory").unwrap();
-                writeln!(handle, "       as /dev/shm/{}\n", file_name).unwrap();
-                handle.flush().unwrap();
-                std::process::exit(1);
-            }
-        },
-        Err(e) => {
-            let stdout = io::stdout();
-            let mut handle = BufWriter::new(stdout.lock());
-            writeln!(handle, "\nerror: WARNING! something went wrong with the encryption").unwrap();
-            writeln!(handle, "       The unencrypted file may still be found in memory").unwrap();
-            writeln!(handle, "       as /dev/shm/{}\n", file_name).unwrap();
-            handle.flush().unwrap();
-            eprintln!("\nerror: program terminated with code: {}\n", e);
-            std::process::exit(1);
-        },
-    }
-}
+//     println!("\ndebug: gnupg_command executed: {:?}", gnupg_command);
+
+//     let status = gnupg_command.status();
+//     match status {
+//         Ok(code) => {
+//             if !code.success() {
+//                 err::error_handling(code,
+//                     "The unencrypted file may still be recoverable from shared memory with name:",
+//                     input_file,
+//                     1);
+//             }
+//         },
+//         Err(e) => err::error_handling(e,
+//             "The unencrypted file may still be recoverable from shared memory with name:",
+//             input_file,
+//             1),
+//     }
+// }

@@ -15,3 +15,5 @@ readme.workspace = true
 
 [dependencies]
 toml = "0.8.8"
+lib_misc = { path = "../lib_misc" }
+lib_procs = { path = "../lib_procs" }

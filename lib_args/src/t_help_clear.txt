@@ -1,2 +1,2 @@
 To Clear any remanence of temporary files in shared
-memory, in case of errors that left such behind.
+memory, in case of errors that left such behind

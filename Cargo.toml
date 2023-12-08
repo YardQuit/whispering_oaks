@@ -5,7 +5,7 @@ members = [
     "lib_misc",
     "lib_args",
     "lib_cipher",
-    "lib_proc",
+    "lib_procs",
     "lib_fs",
 ]
 
@@ -16,7 +16,7 @@ default-members = [
     "lib_misc",
     "lib_args",
     "lib_cipher",
-    "lib_proc",
+    "lib_procs",
     "lib_fs",
 ]
 

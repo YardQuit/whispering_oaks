@@ -1,47 +1,40 @@
 use std::env;
 use dirs;
 
-pub fn editor_selection() -> String {
-    if let Ok(editor) = env::var("WHISPERING_OAKS") {
-        return editor;
-    }
+pub fn editor_selection(preferred: &str, default: &str) -> Result<String, String> {
+    if let Ok(editor) = env::var(preferred) {
+        if !editor.is_empty() {
+            return Ok(editor);
+        }
+    }; 
+    
+    if let Ok(editor) = env::var(default) {
+        return Ok(editor);
+    };
 
-    if let Ok(editor) = env::var("EDITOR") {
-        return editor;
-    }
-
-    eprintln!("\nerror: there is no editor set as either prffered or default)");    
-    std::process::exit(1);
+    Err(String::from("faild to read environment variables"))
 }
 
-pub fn home_path() -> String {
-    let home: Option<std::path::PathBuf> = dirs::home_dir();
-    match home {
-        Some(home_path) => home_path.to_string_lossy().to_string(),
+pub fn home_path() -> Result<String, String> {
+    let config: Option<std::path::PathBuf> = dirs::home_dir();
+    match config {
+        Some(config_path) => {
+            Ok(config_path.to_string_lossy().to_string())
+        },
         None => {
-            eprintln!("\nerror: could not find user home directory");
-            std::process::exit(1);
+            Err(String::from("could not find user home directory"))
         },
     }
 }
 
-pub fn config_path() -> String {
+pub fn config_path() -> Result<String, String> {
     let config: Option<std::path::PathBuf> = dirs::config_dir();
     match config {
-        Some(config_path) => config_path.to_string_lossy().to_string(),
+        Some(config_path) => {
+            Ok(config_path.to_string_lossy().to_string())
+        },
         None => {
-            eprintln!("\nerror: could not find user config directory");
-            std::process::exit(1);
-        }
+            Err(String::from("could not find user config directory"))
+        },
     }
 }
-/*
-    UNIT-TESTS SECTION BEGINS
-*/
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-
-//     #[test]
-//     fn test_env_variable_for_editor() {}
-// }
