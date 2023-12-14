@@ -46,7 +46,7 @@ pub fn file_decrypt(output_file: &str, input_file: &str) -> Result<String, io::E
                     break;
                 } else {
                     decrypt_attempts += 1;
-                    if decrypt_attempts >= 5 {
+                    if decrypt_attempts >= 3 {
                         return Err(io::Error::new(
                             io::ErrorKind::Other,
                             "GnuPG decryption failed",
