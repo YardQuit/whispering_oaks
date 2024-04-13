@@ -1,0 +1,3 @@
+To use a template. Templates must be stored in
+"~/.config/whispering_oaks/templates". Templates can
+be encrypted with GnuPG or in clear-text format

@@ -1,0 +1,4 @@
+To encrypt for a specific user ID and determine
+which public keys to use, you can obtain the
+necessary information by running the command 
+'gpg --list-public-keys'

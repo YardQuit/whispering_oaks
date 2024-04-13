@@ -1,0 +1,41 @@
+[workspace]
+# path to packages used in building application
+members = [
+    "bin_main",
+    "lib_misc",
+    "lib_args",
+    "lib_cipher",
+    "lib_procs",
+    "lib_fs",
+]
+
+# specify the members to operate on from workspace root (can omit crates)
+# can be omited while compiling with option --workspace
+default-members = [
+    "bin_main",
+    "lib_misc",
+    "lib_args",
+    "lib_cipher",
+    "lib_procs",
+    "lib_fs",
+]
+
+# specify the members not to operate on from workspace root (omits crates)
+# can be omited while compiling with opton --workspace
+# exclude = [""]
+
+# sets workspace resolver to verison 2
+resolver = "2"
+
+# general package metadata
+# for sub-crates to interit, use keyword: {key}.workspace = true
+# e.g. "authors.workspace = true" in sub-crates Cargo.toml [package] section
+[workspace.package]
+authors = ["Michael A Jones"]
+keywords = ["rust", "gpg", "encrypt", "editor"]
+categories = ["security"]
+license = "GNU General Public License v3.0"
+homepage = "https://github.com/YardQuit/"
+documentation = ""
+description = ""
+readme = ""

@@ -1,0 +1,26 @@
+[package]
+name = "bin_main"
+version = "1.1.2"
+edition = "2021"
+authors.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+description.workspace = true
+readme.workspace = true
+
+# set the binary name to 'wo' from the default 'bin_main'
+[[bin]]
+name = "wo"
+path = "src/main.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+lib_misc = { path = "../lib_misc" }
+lib_fs = { path = "../lib_fs" }
+lib_procs = { path = "../lib_procs" }
+lib_cipher = { path = "../lib_cipher" }
+lib_args = { path = "../lib_args" }

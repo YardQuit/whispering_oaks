@@ -1,0 +1,19 @@
+[package]
+name = "lib_cipher"
+version = "0.1.0"
+edition = "2021"
+authors.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+description.workspace = true
+readme.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+lib_fs = { path = "../lib_fs" }
+lib_misc = { path = "../lib_misc" }
+lib_procs = { path = "../lib_procs" }

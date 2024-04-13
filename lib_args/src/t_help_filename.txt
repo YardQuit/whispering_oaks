@@ -1,0 +1,5 @@
+To assign a filename to a document, simply provide the
+desired name without including the '.gpg' extension.
+This extension will be added automatically. If you
+want to save the file in a particular directory, you
+can include the desired path as part of the filename

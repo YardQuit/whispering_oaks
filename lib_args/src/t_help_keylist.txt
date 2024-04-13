@@ -1,0 +1,2 @@
+Lists available public keys to use in conjunction with
+"-r" or "-R" as the recipient value(s)

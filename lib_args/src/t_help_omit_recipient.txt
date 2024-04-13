@@ -1,0 +1,4 @@
+To encrypt for more than one recipient and set default
+recipient is omitted. Note, if such recipient is to be
+included, this needs to be specified while being asked
+for recipients during encryption process
