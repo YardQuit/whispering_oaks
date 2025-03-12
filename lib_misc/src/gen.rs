@@ -11,11 +11,11 @@ pub fn name() -> Result<String, String> {
         .map(char::from)
         .collect();
 
-    let name = format!("wo_{}", generate_name);
+    let name = format!("wo_{}.shm", generate_name);
 
     if name.starts_with("wo_")
-        && name.len() == 13
-        && name[3..].chars().all(|c| c.is_ascii_alphanumeric())
+        && name.len() == 17
+        && name[3..13].chars().all(|c| c.is_ascii_alphanumeric())
     {
         Ok(name)
     } else {
@@ -35,7 +35,7 @@ mod tests {
         let random_name = name().unwrap();
 
         assert!(random_name.starts_with("wo_"));
-        assert_eq!(random_name.len(), 13);
-        assert!(random_name[3..].chars().all(|c| c.is_ascii_alphanumeric()));
+        assert_eq!(random_name.len(), 17);
+        assert!(random_name[3..13].chars().all(|c| c.is_ascii_alphanumeric()));
     }
 }
